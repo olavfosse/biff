@@ -1,25 +1,13 @@
-# Biff
+# Olav's Biff Fork
+This is a personal fork for working on upstream features and
+personal changes.
 
-A Clojure web framework for solo developers. See [biffweb.com](https://biffweb.com).
+You should use https://github.com/jacobobryant/biff.
 
-## Contributing
+---
 
-First, check out the [content library](https://biffweb.com/docs/library/). Many
-contributions to Biff would likely work well as simple how-to guides (e.g. paste some
-code + instructions in a gist). If you write something for the content library, open an issue
-and I'll add it.
+Create new project:
 
-To hack on Biff, either run `bb dev`, or:
-
-1. `cd example`
-2. `cp config.edn.TEMPLATE config.edn`
-3. `bb dev`
-
-(The example project's deps.edn declares a local dependency on the Biff library
-code.)
-
-## Sponsors
-
-Thanks to [JUXT](https://juxt.pro), [Clojurists
-Together](https://www.clojuriststogether.org/) and [other
-individuals](https://github.com/sponsors/jacobobryant) for sponsoring Biff!
+```bash
+bb -e '(load-string (slurp "https://raw.githubusercontent.com/olavfosse/biff/master/new-project.clj"))'
+```

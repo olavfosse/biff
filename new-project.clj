@@ -5,7 +5,7 @@
             [clojure.string :as str])
   (:import java.security.SecureRandom))
 
-(def repo-url "https://github.com/jacobobryant/biff")
+(def repo-url "https://github.com/olavfosse/biff")
 
 (defn sh
   [& args]
