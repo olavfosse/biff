@@ -251,6 +251,10 @@
        (some-> s (str/replace "'" "'\"'\"'"))
        \'))
 
+;; NB: this command assumes anything written to stdout is part of the
+;;     command.
+;;
+;;     DO NOT LOG ANYTHING OR PRINT ANYTHING
 (defn run-cmd
   "Internal. Used by the server to start the app."
   []
@@ -357,7 +361,6 @@
 ;; This should be configureable... or maybe i just shouldn't change it
 (def prod-work-tree "/home/app/tree/")
 (def prod-work-tree-ssh-path (str "app@" (:biff.tasks/server @config) ":" prod-work-tree))
-(println 'prod-work-tree-ssh-path prod-work-tree-ssh-path)
 
 (defn- push-files-rsync []
   (let [files (->> (:out (sh/sh "git" "ls-files"))
