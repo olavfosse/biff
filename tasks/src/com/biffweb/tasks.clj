@@ -85,7 +85,7 @@
     (and (= identitiesonly "yes") (= addkeystoagent "false"))))
 
 (defn with-ssh-agent* [f]
-  (if-let [env (and (not (ssh-agent-disabled-for-host? (:biff.tasks/server @config)))
+  (if-let [env (and #_(not (ssh-agent-disabled-for-host? (:biff.tasks/server @config)))
                     (not (:biff.tasks/skip-ssh-agent @config))
                     (fs/which "ssh-agent")
                     (not (sh-success? "ssh-add" "-l"))
@@ -354,9 +354,13 @@
   []
   (server "systemctl reset-failed app.service; systemctl restart app"))
 
+;; This should be configureable... or maybe i just shouldn't change it
+(def prod-work-tree "/home/app/tree/")
+(def prod-work-tree-ssh-path (str "app@" (:biff.tasks/server @config) ":" prod-work-tree))
+(println 'prod-work-tree-ssh-path prod-work-tree-ssh-path)
+
 (defn- push-files-rsync []
-  (let [{:biff.tasks/keys [server]} @config
-        files (->> (:out (sh/sh "git" "ls-files"))
+  (let [files (->> (:out (sh/sh "git" "ls-files"))
                    str/split-lines
                    (map #(str/replace % #"/.*" ""))
                    distinct
@@ -371,17 +375,20 @@
     (->> (concat ["rsync" "--archive" "--verbose" "--relative" "--include='**.gitignore'"
                   "--exclude='/.git'" "--filter=:- .gitignore" "--delete-after"]
                  files
-                 [(str "app@" server ":")])
+                 [prod-work-tree-ssh-path])
          (apply shell))))
 
+;; The problem is that this here is hardcoded to use /home/app
 (defn- push-files-git []
   (let [{:biff.tasks/keys [server deploy-to deploy-from deploy-cmd]} @config]
     (apply shell (concat ["scp" "config.edn"]
                          (when (fs/exists? "secrets.env") ["secrets.env"])
-                         [(str "app@" server ":")]))
+                         [prod-work-tree-ssh-path]))
     (when (fs/exists? css-output)
-      (shell "ssh" (str "app@" server) "mkdir" "-p" "target/resources/public/css/")
-      (shell "scp" css-output (str "app@" server ":" css-output)))
+      (shell "ssh" (str "app@" server) "mkdir" "-p" (str prod-work-tree
+                                                         "target/resources/public/css/"))
+      (shell "scp" css-output (str "app@" server ":" (str prod-work-tree
+                                                          css-output))))
     (time (if deploy-cmd
             (apply shell deploy-cmd)
             ;; For backwards compatibility
