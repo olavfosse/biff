@@ -94,7 +94,6 @@ greenskill.io {
     # https://caddyserver.com/docs/automatic-https
     root * /home/app/tree/target/resources/public
     file_server
-    encode gzip text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript
     reverse_proxy localhost:8080
 }
 EOD
