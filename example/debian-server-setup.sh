@@ -5,7 +5,7 @@ set -e
 BIFF_ENV=${1:-prod}
 CLJ_VERSION=1.11.1.1165
 TRENCH_VERSION=0.4.0
-# FIXME: parameterize on ARCH
+# TODO: parameterize on ARCH
 ARCH=arm64
 TRENCH_FILE=trenchman_${TRENCH_VERSION}_linux_${ARCH}.tar.gz
 
@@ -23,7 +23,7 @@ bash < <(curl -s https://download.clojure.org/install/linux-install-$CLJ_VERSION
 bash < <(curl -s https://raw.githubusercontent.com/babashka/babashka/master/install)
 wget https://github.com/athos/trenchman/releases/download/v$TRENCH_VERSION/$TRENCH_FILE
 mkdir .trench_tmp
-tar -xf $TRENCH_FILE --directroy .trench_tmp
+tar -xf $TRENCH_FILE --directory .trench_tmp
 mv .trench_tmp/trench /usr/local/bin/
 rm -rf $TRENCH_FILE .trench_tmp
 
@@ -87,9 +87,7 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /
 apt -y update
 apt -y install caddy
 
-# Nginx
-
-rm /etc/nginx/sites-enabled/default
+# Caddy
 cat > /etc/caddy/Caddyfile << EOD
 greenskill.io {
     # HTTPS is automatic!
@@ -100,7 +98,6 @@ greenskill.io {
     reverse_proxy localhost:8080
 }
 EOD
-ln -s /etc/nginx/sites-{available,enabled}/app
 
 # App dependencies
 # If you need to install additional packages for your app, you can do it here.
