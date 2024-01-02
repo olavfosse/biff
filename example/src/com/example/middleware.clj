@@ -18,6 +18,20 @@
       {:status 303
        :headers {"location" "/signin?error=not-signed-in"}})))
 
+(defn wrap-require-user [handler]
+  "Ensures the user is logged in and that :user is associated
+  with (xt/entity uid). If your handler or middleware requires :user,
+  use it explicitly."
+  (fn [{:keys [session biff/db] :as ctx}]
+    (if-not (some? (:uid session))
+      {:status 303
+       :headers {"location" "/signin?error=not-signed-in"}}
+      (if-let [user (or (:user ctx)
+                        (xt/entity db (:uid session)))]
+        (handler (assoc ctx :user user))
+        {:status 303
+         :headers {"location" "/signin?error=not-signed-in"}}))))
+
 ;; Stick this function somewhere in your middleware stack below if you want to
 ;; inspect what things look like before/after certain middleware fns run.
 (defn wrap-debug [handler]
