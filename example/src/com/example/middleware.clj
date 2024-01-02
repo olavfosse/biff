@@ -2,7 +2,8 @@
   (:require [com.biffweb :as biff]
             [muuntaja.middleware :as muuntaja]
             [ring.middleware.anti-forgery :as csrf]
-            [ring.middleware.defaults :as rd]))
+            [ring.middleware.defaults :as rd]
+            [xtdb.api :as xt]))
 
 (defn wrap-redirect-signed-in [handler]
   (fn [{:keys [session] :as ctx}]
