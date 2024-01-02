@@ -4,6 +4,15 @@
         metosin/muuntaja                    {:mvn/version "0.6.8"}
         ring/ring-defaults                  {:mvn/version "0.3.4"}
         org.clojure/clojure                 {:mvn/version "1.11.1"}
+        babashka/fs                         {:mvn/version "0.5.20"}
+        babashka/process                    {:mvn/version "0.5.21"}
+        babashka/babashka.curl              {:mvn/version "0.1.2"}
+        io.github.clojure/tools.build {:git/sha "24f2894"
+                                       :git/tag "v0.9.5"
+                                       :git/url "https://github.com/clojure/tools.build.git"}
+
+
+
 
         ;; Notes on logging: https://gist.github.com/jacobobryant/76b7a08a07d5ef2cc076b048d078f1f3
         org.slf4j/slf4j-simple     {:mvn/version "2.0.0-alpha5"}

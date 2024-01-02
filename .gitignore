@@ -19,3 +19,4 @@ site/
 .clj-kondo/
 .lsp/
 .portal/
+prod_build

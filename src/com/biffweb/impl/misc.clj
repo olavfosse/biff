@@ -151,7 +151,7 @@
 (defn use-secrets [ctx]
   (when-not (every? #(get-secret ctx %) [:biff.middleware/cookie-secret :biff/jwt-secret])
     (binding [*out* *err*]
-      (println "Secrets are missing. Run `bb generate-secrets` and edit secrets.env.")
+      (println "Secrets are missing. Run `clj -X com.example/-generate-secrets-main` and edit secrets.env.")
       (System/exit 1)))
   (assoc ctx :biff/secret #(get-secret ctx %)))
 
