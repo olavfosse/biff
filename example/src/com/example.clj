@@ -26,6 +26,15 @@
             [clojure.tools.build.api :as b])
   (:gen-class))
 
+;; This sets up reading and writing of time literals, such as
+;; #time/date "2024-01-01":
+(require '[time-literals.read-write])
+(time-literals.read-write/print-time-literals-clj!)
+;; Pass this to clojure.edn/read(-string)
+(def edn-opts {:readers time-literals.read-write/tags})
+;; Add support for time formatting
+(require '[tick.locale-en-us])
+
 (def plugins
   [app/plugin
    (biff/authentication-plugin {})
