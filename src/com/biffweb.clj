@@ -1,5 +1,6 @@
 (ns com.biffweb
   (:require [clojure.java.io :as io]
+            [clojure.edn :as edn]
             [clojure.stacktrace :as st]
             [clojure.string :as str]
             [com.biffweb.impl.auth :as auth]
@@ -60,7 +61,7 @@
   The default value is `prod`. To inherit config from other environments, set
   :merge to a sequence of environment keys."
   [{:keys [biff/config] :or {config "config.edn"} :as ctx}]
-  (merge ctx (util/read-config config)))
+  (merge ctx (edn/read-string (slurp config))))
 
 (defn sh
   "Runs a shell command.
