@@ -105,17 +105,6 @@
     (when (.isFile (io/file dir "secrets.env.TEMPLATE"))
       (.renameTo (io/file dir "secrets.env.TEMPLATE") (io/file dir "secrets.env")))
     (rmrf tmp)
-    (println)
-    (println "Your project is ready. Run the following commands to get started:")
-    (println)
-    (println "  cd" (.getPath dir))
-    (println "  git init")
-    (println "  git add .")
-    (println "  git commit -m \"First commit\"")
-    (println "  bb dev")
-    (println)
-    (println "And run `bb tasks` for a list of available commands.")
-    (println)
     (System/exit 0)))
 
 ;; Workaround since *command-line-args* now includes options passed to bb.

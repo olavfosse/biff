@@ -1,0 +1,17 @@
+# TODO: process this in new-project.clj
+[Unit]
+Description=example.com
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+User=app
+Restart=on-failure
+RestartSec=5s
+Environment="BIFF_ENV=prod"
+WorkingDirectory=/home/app/example.com
+ExecStart=/bin/sh -c '$$(bb run-cmd)'
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
