@@ -139,9 +139,6 @@
     (io/copy (:body (curl/get url {:compressed false :as :stream})) dest)
     (.setExecutable dest true)))
 
-(defn shell [& args]
-  (apply process/shell args))
-
 (defn tailwind
   [action]
   (let [local-bin-installed (fs/exists? "bin/tailwindcss")]
@@ -151,15 +148,15 @@
     ;; incomplete, the 139 exit code handler will be triggered below.
     (.setExecutable (io/file "bin/tailwindcss") true)
     (try
-      (apply shell (concat ["bin/tailwindcss"]
-                           ["-c" "resources/tailwind.config.js"
-                            "-i" "resources/tailwind.css"
-                            "-o" (case action
-                                   :dev "target/resources/public/css/main.css"
-                                   :build-prod "prod_build/resources/public/css/main.css")]
-                           (case action
-                             :dev "--watch"
-                             :build-prod "--minify")))
+      (process/shell "bin/tailwindcss"
+                     "-c" "resources/tailwind.config.js"
+                     "-i" "resources/tailwind.css"
+                     "-o" (case action
+                            :dev "target/resources/public/css/main.css"
+                            :build-prod "prod_build/resources/public/css/main.css")
+                     (case action
+                       :dev "--watch"
+                       :build-prod "--minify"))
       (catch Exception e
         (when (= 139 (:babashka/exit (ex-data e)))
           (binding [*out* *err*]
