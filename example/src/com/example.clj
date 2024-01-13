@@ -22,7 +22,9 @@
             [clojure.tools.namespace.repl :as tn-repl]
             [malli.core :as malc]
             [malli.registry :as malr]
-            [nrepl.cmdline :as nrepl-cmd]
+            nrepl.cmdline ;; unix
+            nrepl.server ;; clojure
+            cider.nrepl
             [clojure.tools.build.api :as b])
   (:gen-class))
 
@@ -166,19 +168,22 @@
             (println)))
         (throw e)))))
 
-(defn -dev-main [& args]
-  ;; args must be passed directly now... it's fine tbh.. methinks
-  ;; TODO: tailwind watcher
+(defn dev [args]
   (future-verbose (tailwind :dev))
-  ;; TODO: secrets/config
-  
   (start)
-  (apply nrepl-cmd/-main args))
+  ;; Should nrepl-server be a component? perhaps
+  (def nrepl-server (nrepl.server/start-server {:port 9999
+                                                :handler (apply
+                                                          nrepl.server/default-handler
+                                                          cider.nrepl/cider-middleware)}))
+  (log/info "nREPL started on port 9999")
+  )
 
-(defn -prod-main [& args]
+;; This is the fn called on `java -jar app.jar`
+(defn main [& args]
   (start)
-  (apply nrepl-cmd/-main args))
-(def -main -prod-main)
+  ;; TODO: change
+  (apply nrepl.cmdline/-main args))
 
 (defn -build-prod-main [& args]
   ;; stil some thinkin to do wrt getting the dictionaries right

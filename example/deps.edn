@@ -13,6 +13,7 @@
 
         ;; Combinators and abstractions
         cloroutine/cloroutine {:mvn/version "11"}
+        missionary/missionary {:mvn/version "b.33"}
 
         ;; Time
         tick/tick {:mvn/version "0.7.5"}
@@ -22,4 +23,11 @@
         org.slf4j/slf4j-simple     {:mvn/version "2.0.0-alpha5"}
         org.slf4j/log4j-over-slf4j {:mvn/version "1.7.36"}
         org.slf4j/jul-to-slf4j     {:mvn/version "1.7.36"}
-        org.slf4j/jcl-over-slf4j   {:mvn/version "1.7.36"}}}
+        org.slf4j/jcl-over-slf4j   {:mvn/version "1.7.36"}
+
+        ;; nREPL
+        nrepl/nrepl       {:mvn/version "1.1.0"}
+        cider/cider-nrepl {:mvn/version "0.44.0"}}
+ :aliases {:dev {:exec-fn com.example/dev}
+           :test {:exec-fn com.example/test}
+           :build {:exec-fn com.example/build}}}

@@ -1,0 +1,3 @@
+#+begin_src shell
+  source secrets.env && clojure -X:dev
+#+end_src
