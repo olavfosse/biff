@@ -176,6 +176,7 @@
                                                 :handler (apply
                                                           nrepl.server/default-handler
                                                           cider.nrepl/cider-middleware)}))
+  (spit ".nrepl-port" "9999")
   (log/info "nREPL started on port 9999")
   )
 
