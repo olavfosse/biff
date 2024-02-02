@@ -38,7 +38,18 @@
                                      [:script {:src "https://unpkg.com/hyperscript.org@0.9.8"}]
                                      (when recaptcha
                                        [:script {:src "https://www.google.com/recaptcha/api.js"
-                                                 :async "async" :defer "defer"}])]
+                                                 :async "async" :defer "defer"}])
+                                     [:script
+                                      {:async "",
+                                       :src "https://www.googletagmanager.com/gtag/js?id=G-GOOGLE_ANALYTICS_ID"}]
+                                     [:script
+                                      { :dangerouslySetInnerHTML
+                                       {:__html
+                                        "window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-GOOGLE_ANALYTICS_ID');"}}]]
                                     head))))
    body))
 
